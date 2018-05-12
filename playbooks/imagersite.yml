@@ -74,22 +74,38 @@
         dest: /etc/systemd/system/gunicorn.service
       become: yes
       become_method: sudo
+    
+    - name: Check status of gunicorn
+      command: systemctl status gunicorn
+      register: service_gunicorn_status
+
+    - name: Restart gunicorn if started
+      command: systemctl restart gunicorn
+      become: yes
+      become_method: sudo
+      when: service_gunicorn_status | started
       
     - name: Start gunicorn
       command: systemctl start gunicorn.service
       become: yes
       become_method: sudo
+      when: service_gunicorn_status | stopped
+
+    - name: Check status of nginx
+      command: systemctl status nginx
+      register: service_nginx_status
+
+    - name: Restart nginx if started
+      command: systemctl restart nginx
+      become: yes
+      become_method: sudo
+      when: service_nginx_status | started
 
     - name: Start nginx
       command: systemctl start nginx
       become: yes
       become_method: sudo
-
-      #- name: Collect static files
-      #command: python3 django-imager/imagersite/manage.py collectstatic
+      when: service_nginx_status | stopped
 
     - name: Migrate database files
       command: python3 django-imager/imagersite/manage.py migrate
-
-
-    # Don't forget to start/restart your services
