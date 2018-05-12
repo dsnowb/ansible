@@ -79,33 +79,33 @@
       command: systemctl status gunicorn
       register: service_gunicorn_status
 
-    - name: Restart gunicorn if started
-      command: systemctl restart gunicorn
-      become: yes
-      become_method: sudo
-      when: service_gunicorn_status | started
+      #- name: Restart gunicorn if started
+      #command: systemctl restart gunicorn
+      #become: yes
+      #become_method: sudo
+      #when: service_gunicorn_status | active
       
     - name: Start gunicorn
       command: systemctl start gunicorn.service
       become: yes
       become_method: sudo
-      when: service_gunicorn_status | stopped
+      #when: service_gunicorn_status | inactive
 
     - name: Check status of nginx
       command: systemctl status nginx
       register: service_nginx_status
 
-    - name: Restart nginx if started
-      command: systemctl restart nginx
-      become: yes
-      become_method: sudo
-      when: service_nginx_status | started
+      #- name: Restart nginx if started
+      #command: systemctl restart nginx
+      #become: yes
+      #become_method: sudo
+      #when: service_nginx_status | active
 
     - name: Start nginx
       command: systemctl start nginx
       become: yes
       become_method: sudo
-      when: service_nginx_status | stopped
+      #when: service_nginx_status | inactive
 
     - name: Migrate database files
       command: python3 django-imager/imagersite/manage.py migrate
