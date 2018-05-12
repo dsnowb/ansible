@@ -1,0 +1,26 @@
+[Unit]
+Description={{ project_name }}
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/{{ project_working_dir }}
+ExecStart=/usr/local/bin/gunicorn -w 3 -b 127.0.0.1:8000 {{ project_wsgi }}.wsgi
+Environment=SECRET_KEY={{ SECRET_KEY }}
+Environment=DB_NAME={{ DB_NAME }}
+Environment=DB_HOST={{ DB_HOST }}
+Environment=DB_USER={{ DB_USER }}
+Environment=DB_PASSWORD={{ DB_PASSWORD }}
+Environment=ALLOWED_HOSTS={{ ALLOWED_HOSTS }}
+Environment=DJANGO_SETTINGS_MODULE={{ DJANGO_SETTINGS_MODULE }}
+Environment=EMAIL_HOST={{ EMAIL_HOST }}
+Environment=EMAIL_PORT={{ EMAIL_PORT }}
+Environment=EMAIL_HOST_USER={{ EMAIL_HOST_USER }}
+Environment=EMAIL_HOST_PASSWORD={{ EMAIL_HOST_PASSWORD }}
+Environment=EMAIL_USE_TLS={{ EMAIL_USE_TLS }}
+Environment=EMAIL_TIMEOUT={{ EMAIL_TIMEOUT }}
+Environment=DEFAULT_FROM_EMAIL={{ DEFAULT_FROM_EMAIL }}
+
+[Install]
+WantedBy=multi-user.target
