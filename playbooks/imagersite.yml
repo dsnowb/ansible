@@ -46,6 +46,9 @@
       become: yes
       become_method: sudo
 
+    - name: Collect static
+      command: python3 django-imager/imagersite/manage.py collectstatic --noinput
+
     - name: Install Gunicorn into Virtual Environment
       pip: name=gunicorn
       become: yes
